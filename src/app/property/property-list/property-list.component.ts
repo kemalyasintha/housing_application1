@@ -2,6 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { error } from 'console';
 import { HousingService } from 'src/app/services/housing.service';
+import { Iproperty } from '../IProperty.interface';
+import { AnyARecord } from 'dns';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-property-list',
@@ -10,61 +13,23 @@ import { HousingService } from 'src/app/services/housing.service';
 })
 export class PropertyListComponent implements OnInit {
 
+SellRent = 1;
+properties: Array<Iproperty> = [];
 
-properties: any; 
-// =[ {
-//     Id: 1,
-//     Name:'Birla House',
-//     Type: 'House',
-//     Price: 120000,
-//     Location: 'New York'
-// },
-// {
-//     Id: 2,
-//     Name: 'Erose Flat',
-//     Type: 'House',
-//     Price: 120000,
-//     Location: 'New York'
-// },
-// {
-//     Id: 3,
-//     Name: 'Gun Hill',
-//     Type: 'House',
-//     Price: 120000,
-//     Location: 'New York'
-// },
-// {
-//     Id: 4,
-//     Name: 'Macro Home',
-//     Type: 'House',
-//     Price: 120000,
-//     Location: 'New York'
-// },
-// {
-//     Id: 5,
-//     Name: 'Saint Church Villa',
-//     Type: 'House',
-//     Price: 120000,
-//     Location: 'New York'
-// },
-// {
-//     Id: 6,
-//     Name: 'Church Villa',
-//     Type: 'House',
-//     Price: 120000,
-//     Location: 'New York'
-// }
-// ]
-
-
-  constructor(private housingService:HousingService) { }
+  constructor(private route: ActivatedRoute, private housingService:HousingService) { }
 
   ngOnInit(): void {
-    this.housingService.getAllProperties().subscribe(
+    if(this.route.snapshot.url.toString())
+    {
+      this.SellRent = 2;
+    }
+    this.housingService.getAllProperties(this.SellRent).subscribe(
           data=>{
         this.properties = data;
-        console.log(data);    
+        console.log(data); 
+        console.log(this.route.snapshot.url.toString());   
       }, error => {
+        console.log('httperror:');
         console.log(error);
 
       }
