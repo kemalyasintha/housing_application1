@@ -1,20 +1,34 @@
-<div class="card">
-    <div class="card-img-wrapper">
-        <img *ngIf="property.Image" class="card-img-top" src="assets/images/{{property.Image}}.png">
-        <img *ngIf="!property.Image" class="card-img-top" src="assets/images/house_default.png">
-    <ul class="list-inline text-center member-icons animate">
-      <li class="list-inline-item">
-        <button class="btn btn-primary" routerLink="/property-detail/{{property.Id}}" ><i class="fa-solid fa-pen-to-square"></i></button>
-      </li>
-      <li class="list-inline-item">
-        <button class="btn btn-primary"><i class="fa-solid fa-address-book"></i></button>
-      </li>
-    </ul>
-    </div>
-    <div class="card-body p-2">
-        <h1>{{property.Name}}</h1>
-        <h2>{{property.Type}}</h2>
-        <h3>{{property.Price}}</h3>
-    </div>
-</div>
+<article class="property-card">
+  <a class="image-link" [routerLink]="['/properties', property().id]">
+    <img
+      [src]="'/images/' + (property().image || 'house_default.png')"
+      [alt]="property().title + ' in ' + property().city"
+      loading="lazy"
+    />
+    <span class="purpose">{{ property().purpose === 'sale' ? 'For sale' : 'For rent' }}</span>
+    @if (property().featured) {
+      <span class="featured">Featured</span>
+    }
+  </a>
 
+  <div class="card-content">
+    <p class="location">{{ property().city }}, {{ property().province }}</p>
+    <h2>
+      <a [routerLink]="['/properties', property().id]">{{ property().title }}</a>
+    </h2>
+    <p class="facts">
+      <span>{{ property().bedrooms }} bd</span>
+      <span>{{ property().bathrooms }} ba</span>
+      <span>{{ property().areaSqFt | number }} ft²</span>
+    </p>
+    <div class="card-footer">
+      <p class="price">
+        {{ property().price | currency: 'CAD' : 'symbol-narrow' : '1.0-0' }}
+        @if (property().purpose === 'rent') {
+          <small>/ month</small>
+        }
+      </p>
+      <span class="type">{{ property().propertyType | titlecase }}</span>
+    </div>
+  </div>
+</article>

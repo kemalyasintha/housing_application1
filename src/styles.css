@@ -1,1 +1,61 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  --white: #ffffff;
+  --slate-50: #f7f9f9;
+  --slate-100: #eef2f2;
+  --slate-200: #dfe7e7;
+  --slate-300: #c4d0d1;
+  --slate-500: #64777a;
+  --slate-600: #4b6063;
+  --slate-700: #344b4e;
+  --ink-950: #102f35;
+  --teal-50: #eaf9f7;
+  --teal-600: #0d9488;
+  --teal-700: #0f766e;
+  --teal-800: #115e59;
+  --aqua-300: #5eead4;
+  --sun-300: #fde68a;
+  --red-50: #fef2f2;
+  --red-700: #b91c1c;
+  color-scheme: light;
+  font-family: 'DM Sans', Arial, sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 320px;
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--slate-50);
+  color: var(--ink-950);
+  margin: 0;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.sr-only {
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}

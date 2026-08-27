@@ -1,5 +1,143 @@
-<div class="row">
-    <div *ngFor="let property of properties" class="shadow-lg col-sm-4 p-3">
-        <app-property-card [property] = property></app-property-card>
+<section class="hero">
+  <div class="hero-content">
+    <p class="eyebrow">British Columbia property search</p>
+    <h1>Find a place that feels like your next chapter.</h1>
+    <p class="hero-copy">
+      Explore a focused set of homes with fast, reactive filtering powered by Angular and RxJS.
+    </p>
+
+    <form class="search-bar" [formGroup]="filtersForm" aria-label="Quick property search">
+      <label class="sr-only" for="hero-search">Search by city or property name</label>
+      <span aria-hidden="true">⌕</span>
+      <input
+        id="hero-search"
+        type="search"
+        formControlName="query"
+        placeholder="Search Surrey, Burnaby, Vancouver..."
+      />
+    </form>
+  </div>
+
+  <div class="hero-stat" aria-label="Project technical highlights">
+    <strong>Angular 22</strong>
+    <span>Standalone components</span>
+    <strong>RxJS</strong>
+    <span>Reactive query state</span>
+    <strong>REST</strong>
+    <span>Typed data access</span>
+  </div>
+</section>
+
+<section class="marketplace">
+  <aside class="filters">
+    <div class="filter-heading">
+      <div>
+        <p class="eyebrow">Refine results</p>
+        <h2>Filters</h2>
+      </div>
+      <button type="button" (click)="resetFilters()">Reset</button>
     </div>
-</div>
+
+    <form [formGroup]="filtersForm">
+      <label>
+        Listing type
+        <select formControlName="purpose">
+          <option value="all">Buy or rent</option>
+          <option value="sale">For sale</option>
+          <option value="rent">For rent</option>
+        </select>
+      </label>
+
+      <label>
+        Property type
+        <select formControlName="propertyType">
+          <option value="all">All property types</option>
+          <option value="house">House</option>
+          <option value="condo">Condo</option>
+          <option value="townhome">Townhome</option>
+          <option value="apartment">Apartment</option>
+        </select>
+      </label>
+
+      <label>
+        Minimum bedrooms
+        <select formControlName="minBedrooms">
+          <option [ngValue]="0">Any</option>
+          <option [ngValue]="1">1+</option>
+          <option [ngValue]="2">2+</option>
+          <option [ngValue]="3">3+</option>
+          <option [ngValue]="4">4+</option>
+        </select>
+      </label>
+
+      <label>
+        Maximum price
+        <input
+          type="number"
+          min="0"
+          step="50000"
+          formControlName="maxPrice"
+          placeholder="No maximum"
+        />
+      </label>
+    </form>
+
+    <div class="stack-note">
+      <span>Engineering focus</span>
+      <p>Strict TypeScript, lazy routes, typed forms, RxJS orchestration, HTTP testing and CI.</p>
+    </div>
+  </aside>
+
+  <div class="results">
+    <div class="results-toolbar">
+      <div>
+        <p class="eyebrow">Available homes</p>
+        <h2>
+          @if (viewModel().status === 'success') {
+            {{ viewModel().total }} matching listings
+          } @else {
+            Property marketplace
+          }
+        </h2>
+      </div>
+
+      <label>
+        <span>Sort by</span>
+        <select [formControl]="filtersForm.controls.sort">
+          <option value="featured">Featured first</option>
+          <option value="newest">Newest</option>
+          <option value="price-asc">Price: low to high</option>
+          <option value="price-desc">Price: high to low</option>
+        </select>
+      </label>
+    </div>
+
+    @if (viewModel().status === 'loading') {
+      <div class="state-panel" aria-live="polite">
+        <div class="spinner" aria-hidden="true"></div>
+        <h3>Loading listings</h3>
+        <p>The REST data service is fetching the latest inventory.</p>
+      </div>
+    } @else if (viewModel().status === 'error') {
+      <div class="state-panel error" role="alert">
+        <span aria-hidden="true">!</span>
+        <h3>We could not load the marketplace</h3>
+        <p>{{ viewModel().errorMessage }}</p>
+        <button type="button" (click)="store.refresh()">Try again</button>
+      </div>
+    } @else if (viewModel().properties.length === 0) {
+      <div class="state-panel">
+        <span aria-hidden="true">⌂</span>
+        <h3>No homes match those filters</h3>
+        <p>Reset the filters or try a broader search.</p>
+        <button type="button" (click)="resetFilters()">Clear filters</button>
+      </div>
+    } @else {
+      <div class="property-grid">
+        @for (property of viewModel().properties; track property.id) {
+          <app-property-card [property]="property" />
+        }
+      </div>
+    }
+  </div>
+</section>

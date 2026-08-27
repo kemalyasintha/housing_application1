@@ -1,0 +1,38 @@
+trigger:
+  branches:
+    include:
+      - master
+      - Adding-features
+
+pr:
+  branches:
+    include:
+      - master
+      - Adding-features
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+  - task: NodeTool@0
+    displayName: Use Node.js 24
+    inputs:
+      versionSpec: 24.x
+
+  - script: npm ci
+    displayName: Install locked dependencies
+
+  - script: npm run format:check
+    displayName: Check formatting
+
+  - script: npm test
+    displayName: Run unit tests
+
+  - script: npm run build
+    displayName: Build production bundle
+
+  - task: PublishPipelineArtifact@1
+    displayName: Publish browser artifact
+    inputs:
+      targetPath: dist/housing-portfolio/browser
+      artifact: northstar-housing-web

@@ -1,56 +1,117 @@
-.card {
-  min-height: 400px;
+.property-card {
+  background: var(--white);
+  border: 1px solid var(--slate-200);
+  border-radius: 1.25rem;
+  box-shadow: 0 12px 30px rgba(21, 45, 53, 0.07);
+  height: 100%;
+  overflow: hidden;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease;
 }
 
-.card-body h1 {
-  font-family: fantasy;
-  color: #0069d9;
+.property-card:hover {
+  box-shadow: 0 18px 42px rgba(21, 45, 53, 0.14);
+  transform: translateY(-4px);
 }
 
-.font-highlight {
-  font-style: italic;
-  color: red;
-}
-
-.card-img-wrapper{
+.image-link {
+  aspect-ratio: 16 / 10;
+  background: var(--slate-100);
+  display: block;
   overflow: hidden;
   position: relative;
 }
 
-.card:hover img{
-  transform: scale(1.2,1.2);
-  transition-duration: 500ms;
-  transition-timing-function: ease-out;
-  height: 250px;
-  opacity: .7;
+.image-link img {
+  height: 100%;
+  object-fit: cover;
+  transition: transform 320ms ease;
+  width: 100%;
 }
 
-.card img{
-  transform: scale(1,1);
-  transition-duration: 500ms;
-  transition-timing-function: ease-out;
-  height: 250px
+.property-card:hover img {
+  transform: scale(1.035);
 }
 
-.member-icons{
+.purpose,
+.featured {
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  left: 1rem;
+  padding: 0.4rem 0.65rem;
   position: absolute;
-  bottom: -10%;
-  left: 0;
-  right: 0;
-  margin-right: auto;
-  margin-left: auto;
-  opacity: 0;
+  text-transform: uppercase;
+  top: 1rem;
 }
 
-.card-img-wrapper:hover .member-icons{
-  bottom: 0;
-  opacity: 1;
+.purpose {
+  background: rgba(15, 118, 110, 0.94);
+  color: var(--white);
 }
 
-.animate{
-  transition: all 0.3s ease-in-out;
+.featured {
+  background: var(--sun-300);
+  color: var(--ink-950);
+  left: auto;
+  right: 1rem;
 }
 
+.card-content {
+  padding: 1.1rem;
+}
 
+.location {
+  color: var(--teal-700);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  margin: 0 0 0.35rem;
+  text-transform: uppercase;
+}
 
+h2 {
+  font-size: 1.18rem;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
 
+h2 a {
+  color: var(--ink-950);
+  text-decoration: none;
+}
+
+.facts {
+  color: var(--slate-500);
+  display: flex;
+  font-size: 0.86rem;
+  gap: 1rem;
+  margin: 0.8rem 0 1rem;
+}
+
+.card-footer {
+  align-items: end;
+  border-top: 1px solid var(--slate-100);
+  display: flex;
+  justify-content: space-between;
+  padding-top: 0.9rem;
+}
+
+.price {
+  color: var(--ink-950);
+  font-size: 1.12rem;
+  font-weight: 900;
+  margin: 0;
+}
+
+.price small {
+  color: var(--slate-500);
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.type {
+  color: var(--slate-500);
+  font-size: 0.78rem;
+}

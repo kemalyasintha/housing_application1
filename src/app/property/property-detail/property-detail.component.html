@@ -1,14 +1,76 @@
-<p>
-  property-detail works!
-  selected is {{propertyId}}
+<section class="detail-shell">
+  <a class="back-link" routerLink="/properties">← Back to listings</a>
 
-<br/> <br/>
-<button (click)="onSelectNext()" class="btn btn-primary">Select Next Page</button>
+  @if (state().status === 'loading') {
+    <div class="detail-state" aria-live="polite">
+      <div class="spinner" aria-hidden="true"></div>
+      <h1>Loading property details</h1>
+    </div>
+  } @else if (state().status === 'error' || !state().property) {
+    <div class="detail-state">
+      <span aria-hidden="true">!</span>
+      <h1>Property not found</h1>
+      <p>The listing may have been removed or the local REST API may be unavailable.</p>
+      <a routerLink="/properties">Return to the marketplace</a>
+    </div>
+  } @else {
+    <article>
+      <div class="image-panel">
+        <img
+          [src]="'/images/' + (state().property!.image || 'house_default.png')"
+          [alt]="state().property!.title"
+        />
+        <span>{{ state().property!.purpose === 'sale' ? 'For sale' : 'For rent' }}</span>
+      </div>
 
-<br/> <br/>
+      <div class="content-panel">
+        <p class="eyebrow">{{ state().property!.city }}, {{ state().property!.province }}</p>
+        <h1>{{ state().property!.title }}</h1>
+        <p class="price">
+          {{ state().property!.price | currency: 'CAD' : 'symbol-narrow' : '1.0-0' }}
+          @if (state().property!.purpose === 'rent') {
+            <small>/ month</small>
+          }
+        </p>
 
-<button routerLink="/property-detail/1" class="btn btn-primary">1</button>
-<button routerLink="/property-detail/2" class="btn btn-primary">2</button>
-<button routerLink="/property-detail/3" class="btn btn-primary">3</button>
-<button [routerLink]="['/property-detail','4']" class="btn btn-primary">4</button>
-</p>
+        <div class="facts">
+          <div>
+            <strong>{{ state().property!.bedrooms }}</strong
+            ><span>Bedrooms</span>
+          </div>
+          <div>
+            <strong>{{ state().property!.bathrooms }}</strong
+            ><span>Bathrooms</span>
+          </div>
+          <div>
+            <strong>{{ state().property!.areaSqFt | number }}</strong
+            ><span>Square feet</span>
+          </div>
+          <div>
+            <strong>{{ state().property!.propertyType | titlecase }}</strong
+            ><span>Property type</span>
+          </div>
+        </div>
+
+        <div class="description">
+          <h2>About this home</h2>
+          <p>{{ state().property!.description }}</p>
+        </div>
+
+        <div class="amenities">
+          <h2>Amenities</h2>
+          <ul>
+            @for (amenity of state().property!.amenities; track amenity) {
+              <li>{{ amenity }}</li>
+            }
+          </ul>
+        </div>
+
+        <div class="availability">
+          <span>Available from</span>
+          <strong>{{ state().property!.availableFrom | date: 'longDate' }}</strong>
+        </div>
+      </div>
+    </article>
+  }
+</section>

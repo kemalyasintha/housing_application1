@@ -1,40 +1,79 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
-import { error } from 'console';
-import { HousingService } from 'src/app/services/housing.service';
-import { Iproperty } from '../IProperty.interface';
-import { AnyARecord } from 'dns';
-import { ActivatedRoute } from '@angular/router';
+import { Component, inject } from '@angular/core';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { debounceTime, distinctUntilChanged, map, startWith } from 'rxjs';
+import {
+  DEFAULT_PROPERTY_FILTERS,
+  ListingPurpose,
+  PropertyFilters,
+  PropertySort,
+  PropertyType,
+} from '../../core/models/property';
+import { PropertyListViewModel, PropertyStore } from '../../core/services/property-store.service';
+import { PropertyCardComponent } from '../property-card/property-card.component';
+
+const INITIAL_VIEW_MODEL: PropertyListViewModel = {
+  status: 'loading',
+  properties: [],
+  total: 0,
+  errorMessage: null,
+  filters: DEFAULT_PROPERTY_FILTERS,
+};
 
 @Component({
   selector: 'app-property-list',
+  standalone: true,
+  imports: [PropertyCardComponent, ReactiveFormsModule],
   templateUrl: './property-list.component.html',
-  styleUrls: ['./property-list.component.css']
+  styleUrl: './property-list.component.css',
 })
-export class PropertyListComponent implements OnInit {
+export class PropertyListComponent {
+  private readonly formBuilder = inject(FormBuilder);
+  readonly store = inject(PropertyStore);
 
-SellRent = 1;
-properties: Array<Iproperty> = [];
+  readonly filtersForm = this.formBuilder.nonNullable.group({
+    query: '',
+    purpose: this.formBuilder.nonNullable.control<ListingPurpose | 'all'>('all'),
+    propertyType: this.formBuilder.nonNullable.control<PropertyType | 'all'>('all'),
+    minBedrooms: 0,
+    maxPrice: 0,
+    sort: this.formBuilder.nonNullable.control<PropertySort>('featured'),
+  });
 
-  constructor(private route: ActivatedRoute, private housingService:HousingService) { }
+  readonly viewModel = toSignal(this.store.viewModel$, {
+    initialValue: INITIAL_VIEW_MODEL,
+  });
 
-  ngOnInit(): void {
-    if(this.route.snapshot.url.toString())
-    {
-      this.SellRent = 2;
-    }
-    this.housingService.getAllProperties(this.SellRent).subscribe(
-          data=>{
-        this.properties = data;
-        console.log(data); 
-        console.log(this.route.snapshot.url.toString());   
-      }, error => {
-        console.log('httperror:');
-        console.log(error);
+  constructor() {
+    this.filtersForm.valueChanges
+      .pipe(
+        startWith(null),
+        debounceTime(150),
+        map(() => this.filtersForm.getRawValue()),
+        map((value): PropertyFilters => ({
+          query: value.query,
+          purpose: value.purpose,
+          propertyType: value.propertyType,
+          minBedrooms: Number(value.minBedrooms),
+          maxPrice: Number(value.maxPrice) > 0 ? Number(value.maxPrice) : null,
+          sort: value.sort,
+        })),
+        distinctUntilChanged(
+          (previous, current) => JSON.stringify(previous) === JSON.stringify(current),
+        ),
+        takeUntilDestroyed(),
+      )
+      .subscribe((filters) => this.store.setFilters(filters));
+  }
 
-      }
-    
-    )
-}
-
+  resetFilters(): void {
+    this.filtersForm.reset({
+      query: '',
+      purpose: 'all',
+      propertyType: 'all',
+      minBedrooms: 0,
+      maxPrice: 0,
+      sort: 'featured',
+    });
+  }
 }
