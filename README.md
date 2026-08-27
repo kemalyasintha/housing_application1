@@ -90,4 +90,3 @@ Angular 22, TypeScript 6, RxJS 7, REST, Vitest, GitHub Actions, Azure Pipelines 
 - Built typed REST data access and property-creation workflows with Angular HttpClient, validation, route-based detail retrieval, and unit tests using Vitest and Angular HTTP testing.
 - Added GitHub Actions and Azure Pipelines quality gates for locked dependency installation, formatting, automated tests, production builds, and artifact publication.
 
-This is an independent engineering project. It should not be described as paid production Angular experience.
