@@ -1,22 +1,9 @@
 <section class="form-shell">
   <div class="intro">
     <a routerLink="/properties">← Back to listings</a>
-    <p class="eyebrow">Typed reactive form</p>
+    <p class="eyebrow">List a property</p>
     <h1>Create a property listing</h1>
-    <p>
-      This workflow demonstrates Angular form validation and a typed POST request to the local REST
-      API.
-    </p>
-
-    <div class="engineering-note">
-      <strong>What this form demonstrates</strong>
-      <ul>
-        <li>Strictly typed Angular controls</li>
-        <li>Client-side validation and accessible errors</li>
-        <li>Observable submission and failure handling</li>
-        <li>REST persistence through a service boundary</li>
-      </ul>
-    </div>
+    <p>Provide the details buyers and renters need to discover their next home.</p>
   </div>
 
   <form [formGroup]="form" (ngSubmit)="submit()" novalidate>

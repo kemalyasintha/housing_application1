@@ -3,7 +3,8 @@
     <p class="eyebrow">British Columbia property search</p>
     <h1>Find a place that feels like your next chapter.</h1>
     <p class="hero-copy">
-      Explore a focused set of homes with fast, reactive filtering powered by Angular and RxJS.
+      Explore homes across British Columbia and narrow the results to match your lifestyle and
+      budget.
     </p>
 
     <form class="search-bar" [formGroup]="filtersForm" aria-label="Quick property search">
@@ -16,15 +17,6 @@
         placeholder="Search Surrey, Burnaby, Vancouver..."
       />
     </form>
-  </div>
-
-  <div class="hero-stat" aria-label="Project technical highlights">
-    <strong>Angular 22</strong>
-    <span>Standalone components</span>
-    <strong>RxJS</strong>
-    <span>Reactive query state</span>
-    <strong>REST</strong>
-    <span>Typed data access</span>
   </div>
 </section>
 
@@ -81,11 +73,6 @@
         />
       </label>
     </form>
-
-    <div class="stack-note">
-      <span>Engineering focus</span>
-      <p>Strict TypeScript, lazy routes, typed forms, RxJS orchestration, HTTP testing and CI.</p>
-    </div>
   </aside>
 
   <div class="results">
@@ -116,7 +103,7 @@
       <div class="state-panel" aria-live="polite">
         <div class="spinner" aria-hidden="true"></div>
         <h3>Loading listings</h3>
-        <p>The REST data service is fetching the latest inventory.</p>
+        <p>We are fetching the latest available homes.</p>
       </div>
     } @else if (viewModel().status === 'error') {
       <div class="state-panel error" role="alert">
