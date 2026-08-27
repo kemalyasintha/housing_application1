@@ -44,26 +44,6 @@ h1 {
   max-width: 34rem;
 }
 
-.engineering-note {
-  background: var(--ink-950);
-  border-radius: 1rem;
-  color: var(--white);
-  margin-top: 2rem;
-  padding: 1.25rem;
-}
-
-.engineering-note strong {
-  color: var(--aqua-300);
-}
-
-.engineering-note ul {
-  color: var(--slate-300);
-  font-size: 0.85rem;
-  line-height: 1.8;
-  margin: 0.6rem 0 0;
-  padding-left: 1.2rem;
-}
-
 form {
   align-self: start;
   background: var(--white);

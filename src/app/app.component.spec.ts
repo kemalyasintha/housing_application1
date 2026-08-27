@@ -13,6 +13,6 @@ describe('AppComponent', () => {
     fixture.detectChanges();
 
     expect(fixture.nativeElement.textContent).toContain('Northstar');
-    expect(fixture.nativeElement.textContent).toContain('Independent Angular engineering project');
+    expect(fixture.nativeElement.textContent).toContain('Explore homes across British Columbia');
   });
 });
